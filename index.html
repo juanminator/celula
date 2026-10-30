@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
+    <!-- ================================================================
+         CONFIGURACIÓN DEL DOCENTE · REGISTRO DE RESPUESTAS
+         Pegue entre las comillas de «endpoint» la URL de su aplicación web
+         de Google Apps Script (termina en /exec). Si queda vacía, las
+         respuestas se guardan solo en el equipo del estudiante.
+         ================================================================ -->
+    <script id="config-respuestas">
+    window.UDI_RESPUESTAS = {
+      endpoint: '',
+      grupoPorDefecto: 'Biología 5108',
+      reflexiones: {
+        historia: 'Explica con tus palabras por qué hoy se acepta que la célula eucariota surgió de una arquea Asgard y una α-proteobacteria. ¿Qué evidencias lo apoyan?',
+        adn: '¿Qué diferencias en la organización del ADN observas entre una célula procariota y una eucariota? Da dos ejemplos.',
+        organulos: 'Elige un orgánulo y una de sus simulaciones. Describe qué ocurre paso a paso y qué pasaría en la célula si ese orgánulo fallara.',
+        reproduccion: 'Compara la mitosis y la meiosis: ¿en qué se parecen, en qué se diferencian y para qué sirve cada una en tu organismo?',
+        muerte: '¿Por qué la apoptosis no produce inflamación y la necrosis sí? Relaciónalo con lo que ocurre con la membrana plasmática.'
+      }
+    };
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Módulo Interactivo: La Célula y Reproducción Celular | Biología 5108 - UDI</title>
@@ -2942,6 +2961,34 @@ body>header p{opacity:.9}
 .osim-steps{list-style:decimal;padding-left:22px;margin-top:10px;font-size:13px;color:#475569;line-height:1.55}
 .osim-steps li{padding:2px 6px;border-radius:6px}.osim-steps li.on{background:#fef3c7;color:#78350f;font-weight:650}
 .osim-src{font-size:10.5px;color:#94a3b8;margin-top:8px}
+/* v11 · registro de respuestas */
+.rx-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border:1px solid #dce7ef;border-radius:14px;padding:8px 12px;margin:0 auto 18px;max-width:1250px;font-size:12.5px;color:#334155}
+.rx-who{flex:1;min-width:200px}
+.rx-st{font-size:11px;font-weight:750;padding:3px 9px;border-radius:999px}.rx-st.on{background:#dcfce7;color:#166534}.rx-st.off{background:#fef3c7;color:#92400e}
+.rx-bar button{font-size:11.5px;font-weight:750;padding:6px 11px;border-radius:9px;border:1px solid #cbd5e1;background:#f8fafc;color:#0f294a}
+.rx-bar button:hover{background:#0f294a;color:#fff}
+#rx-id,#rx-mis{border:0;border-radius:16px;padding:0;width:min(94vw,560px);max-height:90vh;overflow:auto}
+#rx-mis{width:min(96vw,760px)}
+#rx-id::backdrop,#rx-mis::backdrop{background:rgba(4,15,28,.7)}
+.rx-form{padding:20px 22px;display:grid;gap:10px;font-size:13px;color:#334155}
+.rx-form h3{font-size:18px;font-weight:800;color:#0f294a}
+.rx-form label{display:grid;gap:4px;font-weight:700;font-size:12.5px}
+.rx-form input{border:1px solid #cbd5e1;border-radius:9px;padding:9px 10px;font-weight:500;font-size:14px}
+.rx-row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.rx-btn{background:#0f294a;color:#fff;font-weight:750;padding:8px 14px;border-radius:10px}
+.rx-btn2{background:#f1f5f9;color:#0f294a;font-weight:750;padding:8px 14px;border-radius:10px;border:1px solid #cbd5e1}
+.rx-tab{width:100%;border-collapse:collapse;font-size:12px}.rx-tab th,.rx-tab td{border-top:1px solid #e5e7eb;padding:6px 8px;text-align:left}.rx-tab th{background:#f1f5f9}
+.rx-e-enviado{color:#166534;font-weight:700}.rx-e-pendiente{color:#b45309;font-weight:700}.rx-e-local{color:#64748b;font-weight:700}
+.rx-send{background:#047857;color:#fff;font-weight:750;font-size:12.5px;padding:9px 14px;border-radius:11px;box-shadow:0 2px 6px rgba(4,120,87,.25)}
+.rx-send:hover{background:#065f46}
+.rx-status{margin-top:8px;font-size:12.5px;font-weight:650}
+.rx-ok{color:#166534}.rx-warn{color:#92400e}.rx-wait{color:#475569}
+.rx-q{display:grid;gap:6px}.rx-qt{font-weight:750;color:#1e293b;font-size:13px}
+.rx-ans{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:13px;font-family:inherit;resize:vertical;background:#fff}
+.rx-model summary{cursor:pointer;font-size:12px;font-weight:700;color:#5b3f9a}.rx-model[data-lock] summary{color:#94a3b8;cursor:not-allowed}
+.rx-actions{margin-top:12px}
+.rx-refl{display:grid;gap:8px}.rx-kick{display:inline-block;justify-self:start;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#047857;background:#d1fae5;padding:3px 9px;border-radius:6px}
+@media print{.rx-bar,.rx-send{display:none!important}}
 /* Sección 2.4 Clasificación */
 .tb-class>*+*{margin-top:30px}
 .tb-kicker{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#5b3f9a;background:#ede4f7;padding:4px 10px;border-radius:7px}
@@ -7210,6 +7257,127 @@ ready(()=>{
   try{renderOrganellesGrid(organellesData)}catch(e){}
   const grid=document.getElementById('organelles-grid');
   if(grid&&!document.getElementById('ox-intro'))grid.insertAdjacentHTML('beforebegin',`<p id="ox-intro" class="ox-intro"><b>Nuevo:</b> en cada tarjeta puedes cambiar entre la <b>ilustración</b>, una <b>micrografía real</b> y una <b>simulación animada</b> de su función. En «Gran vacuola central» puedes cambiar el medio y observar la ósmosis.</p>`);
+});
+})();
+</script>
+<script id="atlas-respuestas">
+(function(){
+'use strict';
+/* Registro de respuestas de los estudiantes.
+   - Guarda un borrador en este navegador (para no perder lo escrito).
+   - Envía cada actividad a la hoja de Google del docente (window.UDI_RESPUESTAS.endpoint).
+   - Si no hay conexión, deja el envío en cola y lo reintenta; siempre se puede descargar un respaldo CSV. */
+const CFG=window.UDI_RESPUESTAS||{};
+const EP=(CFG.endpoint||'').trim();
+const LS={get(k,d){try{const v=localStorage.getItem('udi5108.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('udi5108.'+k,JSON.stringify(v))}catch(e){}}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ---------- identificación ---------- */
+const ID={get(){return LS.get('id',{nombre:'',documento:'',grupo:CFG.grupoPorDefecto||''})},set(v){LS.set('id',v);paintBar();syncQuizInputs()}};
+const idOk=i=>i.nombre.trim().length>=3&&i.documento.trim().length>=3;
+function syncQuizInputs(){const i=ID.get();if(!idOk(i))return;[['student-name','nombre'],['student-id','documento'],['student-group','grupo']].forEach(([el,k])=>{const n=document.getElementById(el);if(n&&i[k])n.value=i[k]})}
+function readQuizInputs(){const i=ID.get();const v=id=>(document.getElementById(id)?.value||'').trim();const n={nombre:v('student-name')||i.nombre,documento:v('student-id')||i.documento,grupo:v('student-group')||i.grupo};if(n.nombre!==i.nombre||n.documento!==i.documento||n.grupo!==i.grupo)ID.set(n);return n}
+function askId(){return new Promise(res=>{let d=document.getElementById('rx-id');if(!d){d=document.createElement('dialog');d.id='rx-id';d.innerHTML=`<form method="dialog" class="rx-form"><h3>Identificación del estudiante</h3><p>Tus respuestas se enviarán a tu docente con estos datos.</p><label>Nombre completo<input name="nombre" required minlength="3" autocomplete="name"></label><label>Documento o código estudiantil<input name="documento" required minlength="3" inputmode="numeric"></label><label>Grupo<input name="grupo" placeholder="Ej. Biología 5108 - Grupo A"></label><div class="rx-row"><button value="cancel" formnovalidate type="submit" class="rx-btn2">Cancelar</button><button value="ok" type="submit" class="rx-btn">Guardar</button></div></form>`;document.body.appendChild(d);}
+  const f=d.querySelector('form'),i=ID.get();f.nombre.value=i.nombre;f.documento.value=i.documento;f.grupo.value=i.grupo;
+  d.onclose=()=>{if(d.returnValue==='ok'){const v={nombre:f.nombre.value.trim(),documento:f.documento.value.trim(),grupo:f.grupo.value.trim()};ID.set(v);res(idOk(v)?v:null)}else res(null)};d.returnValue='';d.showModal();});}
+async function needId(){const i=ID.get();if(idOk(i))return i;return await askId()}
+/* ---------- envío ---------- */
+const queue=()=>LS.get('cola',[]);
+function hist(){return LS.get('enviados',[])}
+async function post(rec){
+  if(!EP)return {ok:false,motivo:'sin_endpoint'};
+  try{const r=await fetch(EP,{method:'POST',body:JSON.stringify(rec)});const j=await r.json().catch(()=>({ok:r.ok}));return j&&j.ok?{ok:true}:{ok:false,motivo:(j&&j.error)||'rechazado'}}
+  catch(e){try{await fetch(EP,{method:'POST',mode:'no-cors',body:JSON.stringify(rec)});return {ok:true,opaco:true}}catch(e2){return {ok:false,motivo:'sin_conexion'}}}
+}
+async function send(actividad,titulo,campos){
+  const i=await needId();if(!i)return {ok:false,motivo:'sin_identificacion'};
+  const n=(LS.get('intentos',{})[actividad]||0)+1;const ints=LS.get('intentos',{});ints[actividad]=n;LS.set('intentos',ints);
+  const rec={actividad,campos:Object.assign({'Fecha (estudiante)':new Date().toLocaleString('es-CO'),'Nombre':i.nombre,'Documento':i.documento,'Grupo':i.grupo,'Intento':n},campos),id:Date.now()+'-'+Math.random().toString(36).slice(2,7)};
+  const all=hist();all.push({titulo,fecha:new Date().toISOString(),rec,estado:'pendiente'});
+  const r=await post(rec);all[all.length-1].estado=r.ok?'enviado':(r.motivo==='sin_endpoint'?'local':'pendiente');LS.set('enviados',all.slice(-60));
+  if(!r.ok&&r.motivo!=='sin_endpoint'){const q=queue();q.push(rec);LS.set('cola',q)}
+  paintBar();return r;
+}
+async function flush(){const q=queue();if(!q.length||!EP)return;const rest=[];for(const rec of q){const r=await post(rec);if(!r.ok)rest.push(rec);else{const all=hist();const h=all.find(x=>x.rec&&x.rec.id===rec.id);if(h){h.estado='enviado';LS.set('enviados',all)}}}LS.set('cola',rest);paintBar()}
+function statusHTML(r){if(r.ok)return `<span class="rx-ok">✓ Respuestas enviadas a tu docente${r.opaco?' (sin confirmación de lectura)':''}.</span>`;if(r.motivo==='sin_identificacion')return `<span class="rx-warn">No se envió: falta tu identificación.</span>`;if(r.motivo==='sin_endpoint')return `<span class="rx-warn">Guardado solo en este equipo: el envío al docente aún no está configurado. Descarga tu respaldo en «Mis respuestas».</span>`;return `<span class="rx-warn">Sin conexión: quedó en cola y se enviará automáticamente cuando haya internet.</span>`}
+/* ---------- respaldo CSV ---------- */
+function csv(){const rows=hist();const keys=[...new Set(rows.flatMap(h=>Object.keys(h.rec.campos)))];const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';return '﻿'+['Actividad','Estado',...keys].map(q).join(';')+'\n'+rows.map(h=>[h.titulo,h.estado,...keys.map(k=>h.rec.campos[k])].map(q).join(';')).join('\n')}
+function download(){const b=new Blob([csv()],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');const i=ID.get();a.href=URL.createObjectURL(b);a.download=`respuestas_${(i.documento||'estudiante').replace(/\W+/g,'')}_bio5108.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+/* ---------- barra del estudiante ---------- */
+function paintBar(){const b=document.getElementById('rx-bar');if(!b)return;const i=ID.get(),n=hist().length,p=queue().length;
+  b.innerHTML=`<span class="rx-who">👤 ${idOk(i)?`<b>${esc(i.nombre)}</b> · ${esc(i.documento)}${i.grupo?' · '+esc(i.grupo):''}`:'<b>Identifícate</b> para que tu docente reciba tus respuestas'}</span><span class="rx-st ${EP?'on':'off'}">${EP?'Envío al docente activo':'Envío al docente no configurado'}</span><button type="button" data-a="id">${idOk(i)?'Cambiar datos':'Identificarme'}</button><button type="button" data-a="mis">Mis respuestas (${n}${p?`, ${p} en cola`:''})</button>`;}
+function showMine(){let d=document.getElementById('rx-mis');if(!d){d=document.createElement('dialog');d.id='rx-mis';document.body.appendChild(d);d.addEventListener('click',e=>{if(e.target===d)d.close()})}
+  const rows=hist().slice().reverse();d.innerHTML=`<div class="rx-form"><h3>Mis respuestas</h3><p>Registro guardado en este navegador. Estado «enviado»: tu docente ya lo recibió.</p>${rows.length?`<table class="rx-tab"><tr><th>Actividad</th><th>Fecha</th><th>Resultado</th><th>Estado</th></tr>${rows.map(h=>`<tr><td>${esc(h.titulo)}</td><td>${new Date(h.fecha).toLocaleString('es-CO')}</td><td>${esc(h.rec.campos['Puntaje']||h.rec.campos['Aciertos']||'—')}</td><td class="rx-e-${h.estado}">${{enviado:'Enviado',pendiente:'En cola',local:'Solo local'}[h.estado]||h.estado}</td></tr>`).join('')}</table>`:'<p><i>Aún no has enviado actividades.</i></p>'}<div class="rx-row"><button type="button" class="rx-btn2" data-x="csv">Descargar respaldo (CSV)</button>${queue().length&&EP?'<button type="button" class="rx-btn2" data-x="retry">Reintentar envíos</button>':''}<button type="button" class="rx-btn" data-x="close">Cerrar</button></div></div>`;
+  d.querySelector('[data-x=csv]').onclick=download;d.querySelector('[data-x=close]').onclick=()=>d.close();const rt=d.querySelector('[data-x=retry]');if(rt)rt.onclick=async()=>{await flush();showMine()};if(!d.open)d.showModal()}
+/* ---------- actividades ---------- */
+const L='ABCDEFGH';
+function hookQuiz(){
+  const orig=window.gradeQuiz;if(!orig)return;
+  window.gradeQuiz=async function(){
+    const i=readQuizInputs();orig();
+    const banner=document.getElementById('quiz-score-banner');
+    let ok=0;const campos={};
+    quizQuestions.forEach((q,k)=>{const sel=document.querySelector(`input[name="quiz-q-${k}"]:checked`);const v=sel?+sel.value:-1;if(v===q.correct)ok++;campos['P'+(k+1)]=v<0?'(sin responder)':L[v]+(v===q.correct?' ✓':' ✗')});
+    const tot=quizQuestions.length;
+    const head={'Aciertos':`${ok}/${tot}`,'Puntaje':`${ok}/${tot}`,'Nota (0-5)':(ok/tot*5).toFixed(1)};
+    const st=document.createElement('div');st.className='rx-status';st.innerHTML='<span class="rx-wait">Enviando a tu docente…</span>';if(banner)banner.appendChild(st);
+    if(!idOk(i)&&!idOk(ID.get())){/* pide identificación */}
+    const r=await send('cuestionario','Cuestionario integrador',Object.assign(head,campos));st.innerHTML=statusHTML(r);
+    LS.set('quiz.borrador',null);
+  };
+  // borrador de respuestas
+  const box=document.getElementById('quiz-questions-container');
+  if(box){box.addEventListener('change',e=>{if(e.target.name&&e.target.name.startsWith('quiz-q-')){const d=LS.get('quiz.borrador',{})||{};d[e.target.name]=e.target.value;LS.set('quiz.borrador',d)}});
+    const d=LS.get('quiz.borrador',null);if(d)Object.entries(d).forEach(([n,v])=>{const el=document.querySelector(`input[name="${n}"][value="${v}"]`);if(el)el.checked=true});}
+  ['student-name','student-id','student-group'].forEach(id=>{const n=document.getElementById(id);if(n)n.addEventListener('change',readQuizInputs)});
+  const or=window.resetQuiz;if(or)window.resetQuiz=function(){or();LS.set('quiz.borrador',null)};
+}
+let usedSolution=false;
+function hookGuide(){
+  const fb=document.getElementById('guide-table-feedback');if(!fb||!window.checkGuideTable)return;
+  const oa=window.autoFillGuideTable;if(oa)window.autoFillGuideTable=function(){usedSolution=true;oa()};
+  const orr=window.resetGuideTable;if(orr)window.resetGuideTable=function(){orr();usedSolution=false;restoreGuide()};
+  const tb=document.getElementById('guide-table-body');
+  const save=()=>{const d={};guideTableRows.forEach((r,k)=>{d[k]=[document.getElementById('gtable-type-'+k)?.value,document.getElementById('gtable-func-'+k)?.value]});LS.set('guia.borrador',d)};
+  function restoreGuide(){const d=LS.get('guia.borrador',null);if(!d)return;Object.entries(d).forEach(([k,[a,b]])=>{const x=document.getElementById('gtable-type-'+k),y=document.getElementById('gtable-func-'+k);if(x&&a)x.value=a;if(y&&b)y.value=b})}
+  if(tb){tb.addEventListener('change',()=>{if(!usedSolution)save()});restoreGuide()}
+  const btns=fb.previousElementSibling&&fb.previousElementSibling.querySelector?null:null;
+  const check=document.querySelector('button[onclick="checkGuideTable()"]');
+  if(check&&!document.getElementById('rx-guide-send')){check.insertAdjacentHTML('afterend',`<button type="button" id="rx-guide-send" class="rx-send">📤 Enviar al docente</button>`);
+    document.getElementById('rx-guide-send').onclick=async()=>{window.checkGuideTable();let ok=0;const campos={};guideTableRows.forEach((row,k)=>{const a=document.getElementById('gtable-type-'+k).value,b=document.getElementById('gtable-func-'+k).value;const good=a===row.correctType&&b===row.correctFunc;if(good)ok++;campos[row.org]=(good?'✓ ':'✗ ')+(a==='Seleccione...'?'—':a)+' | '+(b==='Seleccione...'?'—':b.slice(0,60))});
+      const head={'Aciertos':`${ok}/${guideTableRows.length}`,'Usó «Mostrar solución»':usedSolution?'SÍ':'No'};
+      let st=document.getElementById('rx-guide-st');if(!st){st=document.createElement('div');st.id='rx-guide-st';st.className='rx-status';fb.insertAdjacentElement('afterend',st)}st.innerHTML='<span class="rx-wait">Enviando…</span>';
+      st.innerHTML=statusHTML(await send('actividad2','Actividad 2: tabla de orgánulos',Object.assign(head,campos)))};}
+}
+function hookApp24(){
+  const sec=document.getElementById('clasificacion-seres-vivos');if(!sec)return;
+  const dets=[...sec.querySelectorAll('.tb-details')];if(!dets.length||sec.querySelector('.rx-ans'))return;
+  const draft=LS.get('a24.borrador',{});const sent=LS.get('a24.enviado',false);
+  dets.forEach((d,k)=>{const q=d.querySelector('summary').textContent.trim();const p=d.querySelector('p');const wrap=document.createElement('div');wrap.className='tb-details rx-q';
+    wrap.innerHTML=`<p class="rx-qt">${esc(q)}</p><textarea class="rx-ans" data-k="${k}" rows="3" placeholder="Escribe tu respuesta…">${esc(draft[k]||'')}</textarea><details class="rx-model" ${sent?'':'data-lock="1"'}><summary>${sent?'Ver respuesta modelo':'🔒 La respuesta modelo se habilita al enviar'}</summary>${p?p.outerHTML:''}</details>`;d.replaceWith(wrap)});
+  const grid=sec.querySelector('.rx-q').parentElement;
+  grid.insertAdjacentHTML('afterend',`<div class="rx-actions"><button type="button" class="rx-send" id="rx-a24-send">📤 Enviar respuestas al docente</button><div class="rx-status" id="rx-a24-st"></div></div>`);
+  sec.addEventListener('input',e=>{if(e.target.classList.contains('rx-ans')){const d=LS.get('a24.borrador',{});d[e.target.dataset.k]=e.target.value;LS.set('a24.borrador',d)}});
+  sec.addEventListener('click',e=>{const s=e.target.closest('.rx-model summary');if(s&&s.parentElement.dataset.lock){e.preventDefault()}});
+  document.getElementById('rx-a24-send').onclick=async()=>{const ans=[...sec.querySelectorAll('.rx-ans')];if(ans.some(a=>a.value.trim().length<3)){document.getElementById('rx-a24-st').innerHTML='<span class="rx-warn">Responde las cuatro preguntas antes de enviar.</span>';return}
+    const campos={};ans.forEach((a,k)=>campos['Pregunta '+(k+1)]=a.value.trim());const st=document.getElementById('rx-a24-st');st.innerHTML='<span class="rx-wait">Enviando…</span>';const r=await send('aplicacion24','Actividad de aplicación 2.4',campos);st.innerHTML=statusHTML(r);
+    if(r.ok||r.motivo==='sin_endpoint'||r.motivo==='sin_conexion'){LS.set('a24.enviado',true);sec.querySelectorAll('.rx-model').forEach(m=>{delete m.dataset.lock;m.querySelector('summary').textContent='Ver respuesta modelo'})}};
+}
+const SEC={inicio:'1. Inicio',historia:'2. Origen y clasificación',adn:'3. Tipos celulares y ADN',organulos:'4. Orgánulos',reproduccion:'5. Ciclo, mitosis y meiosis',muerte:'6. Muerte celular',evaluacion:'7. Evaluación'};
+function hookReflections(){
+  const R=CFG.reflexiones||{};
+  Object.entries(R).forEach(([sec,preg])=>{const s=document.getElementById('sec-'+sec);if(!s||s.querySelector('.rx-refl'))return;const k='refl.'+sec;
+    s.insertAdjacentHTML('beforeend',`<div class="rx-refl bg-white rounded-2xl p-6 shadow-sm border border-slate-200"><span class="rx-kick">Pregunta de reflexión</span><p class="rx-qt">${esc(preg)}</p><textarea class="rx-ans" rows="4" placeholder="Escribe tu respuesta…">${esc(LS.get(k,''))}</textarea><div class="rx-actions"><button type="button" class="rx-send">📤 Enviar al docente</button><div class="rx-status"></div></div></div>`);
+    const box=s.querySelector('.rx-refl'),ta=box.querySelector('textarea');ta.addEventListener('input',()=>LS.set(k,ta.value));
+    box.querySelector('.rx-send').onclick=async()=>{const st=box.querySelector('.rx-status');if(ta.value.trim().length<10){st.innerHTML='<span class="rx-warn">Escribe una respuesta un poco más completa.</span>';return}st.innerHTML='<span class="rx-wait">Enviando…</span>';st.innerHTML=statusHTML(await send('reflexion','Reflexión: '+(SEC[sec]||sec),{'Sección':SEC[sec]||sec,'Pregunta':preg,'Respuesta':ta.value.trim()}))};});
+}
+function ready(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(fn,150));else setTimeout(fn,150);}
+ready(()=>{
+  const main=document.querySelector('main');
+  if(main&&!document.getElementById('rx-bar')){main.insertAdjacentHTML('afterbegin','<div id="rx-bar" class="rx-bar no-print"></div>');document.getElementById('rx-bar').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.a==='id')askId();else showMine()})}
+  paintBar();syncQuizInputs();hookQuiz();hookGuide();hookApp24();hookReflections();
+  flush();window.addEventListener('online',flush);
+  window.UDIRespuestas={send,flush,csv,id:ID};
 });
 })();
 </script>
